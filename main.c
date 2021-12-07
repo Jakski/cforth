@@ -11,6 +11,21 @@
 int data_stack[DATA_STACK_SIZE] = { 0 };
 int data_stack_top = -1;
 
+#define RETURN_STACK_SIZE 255
+void *return_stack[RETURN_STACK_SIZE] = { NULL };
+int return_stack_top = -1;
+
+#define USER_MEMORY_SIZE 6144
+char user_memory[USER_MEMORY_SIZE] = { 0 };
+char *here = user_memory;
+char *latest = user_memory;
+
+struct dictionary {
+	struct dictionary *prev;
+	char name_size;
+	int flags;
+};
+
 void data_stack_put(int value) {
 	if (data_stack_top == DATA_STACK_SIZE) {
 		THROW_WITH_MESSAGE("Data stack overflow");
@@ -29,6 +44,9 @@ int data_stack_peek(int offset) {
 		THROW_WITH_MESSAGE("Data stack underflow");
 	}
 	return data_stack[data_stack_top - offset];
+}
+
+void word_next(void) {
 }
 
 void word_drop(void) {
